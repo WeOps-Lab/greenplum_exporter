@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: greenplum-{{VERSION}}
+  name: greenplum-exporter-{{VERSION}}
   namespace: greenplum
 spec:
-  serviceName: greenplum-{{VERSION}}
+  serviceName: greenplum-exporter-{{VERSION}}
   replicas: 1
   selector:
     matchLabels:
-      app: greenplum-{{VERSION}}
+      app: greenplum-exporter-{{VERSION}}
   template:
     metadata:
       annotations:
@@ -45,7 +45,7 @@ spec:
         telegraf.influxdata.com/limits-cpu: '300m'
         telegraf.influxdata.com/limits-memory: '300Mi'
       labels:
-        app: greenplum-{{VERSION}}
+        app: greenplum-exporter-{{VERSION}}
         exporter_type: greenplum
         pod_type: exporter
     spec:
@@ -53,7 +53,7 @@ spec:
         node-role: worker
       shareProcessNamespace: true
       containers:
-      - name: greenplum-{{VERSION}}
+      - name: greenplum-exporter-{{VERSION}}
         image: registry-svc:25000/library/greenplum-exporter:latest
         imagePullPolicy: Always
         envFrom:
@@ -77,8 +77,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: greenplum-{{VERSION}}
-  name: greenplum-{{VERSION}}
+    app: greenplum-exporter-{{VERSION}}
+  name: greenplum-exporter-{{VERSION}}
   namespace: greenplum
   annotations:
     prometheus.io/scrape: "true"
@@ -90,4 +90,4 @@ spec:
     protocol: TCP
     targetPort: 9297
   selector:
-    app: greenplum-{{VERSION}}
+    app: greenplum-exporter-{{VERSION}}
