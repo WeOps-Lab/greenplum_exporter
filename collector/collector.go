@@ -5,21 +5,22 @@ import (
 	"fmt"
 	_ "github.com/lib/pq"
 	"github.com/prometheus/client_golang/prometheus"
-	"greenplum-exporter/stopwatch"
 	logger "github.com/prometheus/common/log"
+	"greenplum-exporter/stopwatch"
+	"net/url"
 	"os"
 	"sync"
 	"time"
 )
 
-const verMajorSql=`select (select regexp_matches((select (select regexp_matches((select version()), 'Greenplum Database \d{1,}\.\d{1,}\.\d{1,}'))[1] as version), '\d{1,}'))[1];`
+const verMajorSql = `select (select regexp_matches((select (select regexp_matches((select version()), 'Greenplum Database \d{1,}\.\d{1,}\.\d{1,}'))[1] as version), '\d{1,}'))[1];`
 
 // 定义采集器数据类型结构体
 type GreenPlumCollector struct {
 	mu sync.Mutex
 
 	db       *sql.DB
-	ver       int
+	ver      int
 	metrics  *ExporterMetrics
 	scrapers []Scraper
 }
@@ -134,6 +135,10 @@ func (c *GreenPlumCollector) getGreenPlumConnection() error {
 	//参考：https://blog.csdn.net/u010412301/article/details/85037685
 	dataSourceName := os.Getenv("GPDB_DATA_SOURCE_URL")
 
+	if dataSourceName == "" {
+		dataSourceName = SplitDSN()
+	}
+
 	db, err := sql.Open("postgres", dataSourceName)
 
 	if err != nil {
@@ -177,10 +182,21 @@ func (c *GreenPlumCollector) getGreenplumMajorVersion(db *sql.DB) error {
 			return errC
 		}
 
-		c.ver=verMajor
+		c.ver = verMajor
 	}
 
 	defer rows.Close()
 
 	return nil
+}
+
+// SplitDSN 拆解DSN
+func SplitDSN() string {
+	user := os.Getenv("SQL_EXPORTER_USER")
+	password := os.Getenv("SQL_EXPORTER_PASS")
+	host := os.Getenv("SQL_EXPORTER_HOST")
+	port := os.Getenv("SQL_EXPORTER_PORT")
+	dbname := os.Getenv("SQL_EXPORTER_DB_NAME")
+
+	return fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?sslmode=disable", url.QueryEscape(user), url.QueryEscape(password), host, port, dbname)
 }

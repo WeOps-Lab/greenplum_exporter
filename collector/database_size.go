@@ -167,6 +167,12 @@ func (databaseSizeScraper) Scrape(db *sql.DB, ch chan<- prometheus.Metric, ver i
 
 func queryTablesCount(dbname string, ch chan<- prometheus.Metric) (count float64, err error) {
 	dataSourceName := os.Getenv("GPDB_DATA_SOURCE_URL")
+
+	// 拆解DSN
+	if dataSourceName == "" {
+		dataSourceName = SplitDSN()
+	}
+
 	newDataSourceName := strings.Replace(dataSourceName, "/postgres", "/"+dbname, 1)
 	logger.Infof("Connection string is : %s", newDataSourceName)
 	conn, errA := sql.Open("postgres", newDataSourceName)
