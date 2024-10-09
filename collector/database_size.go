@@ -174,7 +174,7 @@ func queryTablesCount(dbname string, ch chan<- prometheus.Metric) (count float64
 	}
 
 	newDataSourceName := strings.Replace(dataSourceName, "/postgres", "/"+dbname, 1)
-	logger.Infof("Connection string is : %s", newDataSourceName)
+	logger.Debugf("Connection string is : %s", newDataSourceName)
 	conn, errA := sql.Open("postgres", newDataSourceName)
 
 	if errA != nil {
