@@ -109,7 +109,7 @@ func scrapeLoadByUser(db *sql.DB, ch chan<- prometheus.Metric, ver int) error {
 
 	rows, err := db.Query(querySql)
 
-	logger.Infof("Query Database: %s", querySql)
+	logger.Debugf("Query Database: %s", querySql)
 
 	if err != nil {
 		return err

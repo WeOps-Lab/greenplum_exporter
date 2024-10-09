@@ -93,7 +93,7 @@ func (locksScraper) Scrape(db *sql.DB, ch chan<- prometheus.Metric, ver int) err
 	}
 
 	rows, err := db.Query(querySql)
-	logger.Infof("Query Database: %s", querySql)
+	logger.Debugf("Query Database: %s", querySql)
 
 	if err != nil {
 		logger.Errorf("get metrics for scraper, error:%v", err.Error())

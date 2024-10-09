@@ -108,13 +108,13 @@ func (bgWriterStateScraper) Name() string {
 }
 
 func (bgWriterStateScraper) Scrape(db *sql.DB, ch chan<- prometheus.Metric, ver int) error {
-	querySql :=statBgwriterSql_V6;
-	if ver < 6{
-		querySql=statBgwriterSql_V5;
+	querySql := statBgwriterSql_V6
+	if ver < 6 {
+		querySql = statBgwriterSql_V5
 	}
 
 	rows, err := db.Query(querySql)
-	logger.Infof("Query Database: %s", querySql)
+	logger.Debugf("Query Database: %s", querySql)
 
 	if err != nil {
 		ch <- prometheus.MustNewConstMetric(stateDesc, prometheus.GaugeValue, 0, "", "")
@@ -126,8 +126,8 @@ func (bgWriterStateScraper) Scrape(db *sql.DB, ch chan<- prometheus.Metric, ver 
 
 	for rows.Next() {
 		var checkpointsTimedCounter, checkpointsReqCounter,
-		buffersCheckpoint, buffersClean, maxWrittenClean,
-		buffersBackend, buffersBackendFsync, buffersAlloc int64
+			buffersCheckpoint, buffersClean, maxWrittenClean,
+			buffersBackend, buffersBackendFsync, buffersAlloc int64
 		var checkpointWriteTime, checkpointSyncTime float64
 		var statsReset time.Time
 

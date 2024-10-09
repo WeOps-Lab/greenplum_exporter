@@ -161,7 +161,7 @@ func (systemScraper) Name() string {
 
 func (systemScraper) Scrape(db *sql.DB, ch chan<- prometheus.Metric, ver int) error {
 	rows, err := db.Query(systemMetricsSql)
-	logger.Infof("Query Database: %s",systemMetricsSql)
+	logger.Debugf("Query Database: %s", systemMetricsSql)
 
 	if err != nil {
 		return err

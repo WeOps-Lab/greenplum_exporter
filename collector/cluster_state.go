@@ -66,7 +66,7 @@ func (clusterStateScraper) Name() string {
 
 func (clusterStateScraper) Scrape(db *sql.DB, ch chan<- prometheus.Metric, ver int) error {
 	rows, err := db.Query(checkStateSql)
-	logger.Infof("Query Database: %s", checkStateSql)
+	logger.Debugf("Query Database: %s", checkStateSql)
 
 	if err != nil {
 		ch <- prometheus.MustNewConstMetric(stateDesc, prometheus.GaugeValue, 0, "", "", "")
@@ -103,7 +103,7 @@ func (clusterStateScraper) Scrape(db *sql.DB, ch chan<- prometheus.Metric, ver i
 
 func scrapeUpTime(db *sql.DB) (upTime float64, err error) {
 	rows, err := db.Query(upTimeSql)
-	logger.Infof("Query Database Up Time: %s", upTimeSql)
+	logger.Debugf("Query Database Up Time: %s", upTimeSql)
 
 	if err != nil {
 		logger.Errorf("get metrics for scraper, error:%v", err.Error())
@@ -124,7 +124,7 @@ func scrapeUpTime(db *sql.DB) (upTime float64, err error) {
 
 func scrapeVersion(db *sql.DB) (ver string, err error) {
 	rows, err := db.Query(versionSql)
-	logger.Infof("Query Database Version: %s", versionSql)
+	logger.Debugf("Query Database Version: %s", versionSql)
 
 	if err != nil {
 		return
@@ -143,7 +143,7 @@ func scrapeVersion(db *sql.DB) (ver string, err error) {
 
 func scrapeMaster(db *sql.DB) (host string, err error) {
 	rows, err := db.Query(masterNameSql)
-	logger.Infof("Query Database Master Name: %s", masterNameSql)
+	logger.Debugf("Query Database Master Name: %s", masterNameSql)
 
 	if err != nil {
 		return
@@ -163,7 +163,7 @@ func scrapeMaster(db *sql.DB) (host string, err error) {
 
 func scrapeStandby(db *sql.DB) (host string, err error) {
 	rows, err := db.Query(standbyNameSql)
-	logger.Infof("Query Database Standby Name: %s", standbyNameSql)
+	logger.Debugf("Query Database Standby Name: %s", standbyNameSql)
 
 	if err != nil {
 		return
@@ -181,7 +181,7 @@ func scrapeStandby(db *sql.DB) (host string, err error) {
 
 func scrapeSync(db *sql.DB) (sync float64, err error) {
 	rows, err := db.Query(syncSql)
-	logger.Infof("Query Database Sync : %s", syncSql)
+	logger.Debugf("Query Database Sync : %s", syncSql)
 
 	if err != nil {
 		return
@@ -205,7 +205,7 @@ func scrapeConfigLoadTime(db *sql.DB, ver int) (time time.Time, err error) {
 	}
 
 	rows, err := db.Query(querySql)
-	logger.Infof("Query Database Config load Time : %s", querySql)
+	logger.Debugf("Query Database Config load Time : %s", querySql)
 
 	if err != nil {
 		return

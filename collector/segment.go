@@ -76,7 +76,7 @@ func scrapeSegmentConfig(db *sql.DB, ch chan<- prometheus.Metric, ver int) error
 		querySql = segmentConfigSql_V5
 	}
 
-	logger.Infof("Query Database: %s", querySql)
+	logger.Debugf("Query Database: %s", querySql)
 	rows, err := db.QueryContext(ctx, querySql)
 
 	if err != nil {
@@ -112,7 +112,7 @@ func scrapeSegmentDiskFree(db *sql.DB, ch chan<- prometheus.Metric) error {
 
 	defer cancel()
 
-	logger.Infof("Query Database: %s", segmentDiskFreeSizeSql)
+	logger.Debugf("Query Database: %s", segmentDiskFreeSizeSql)
 	rows, err := db.QueryContext(ctx, segmentDiskFreeSizeSql)
 
 	if err != nil {

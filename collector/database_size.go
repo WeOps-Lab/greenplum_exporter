@@ -115,7 +115,7 @@ func (databaseSizeScraper) Scrape(db *sql.DB, ch chan<- prometheus.Metric, ver i
 
 	defer cancel()
 
-	logger.Infof("Query Database: %s", databaseSizeSql)
+	logger.Debugf("Query Database: %s", databaseSizeSql)
 	rows, err := db.QueryContext(ctx, databaseSizeSql)
 	if err != nil {
 		return err
@@ -185,7 +185,7 @@ func queryTablesCount(dbname string, ch chan<- prometheus.Metric) (count float64
 	defer conn.Close()
 
 	rows, errB := conn.Query(tableCountSql)
-	logger.Infof("Query Database: %s", tableCountSql)
+	logger.Debugf("Query Database: %s", tableCountSql)
 
 	if errB != nil {
 		err = errB
@@ -273,7 +273,7 @@ func querySkewTables(conn *sql.DB, ch chan<- prometheus.Metric) error {
 
 func queryHitCacheRate(db *sql.DB, ch chan<- prometheus.Metric) error {
 	rows, err := db.Query(hitCacheRateSql)
-	logger.Infof("Query Database: %s", hitCacheRateSql)
+	logger.Debugf("Query Database: %s", hitCacheRateSql)
 
 	if err != nil {
 		return err
@@ -295,7 +295,7 @@ func queryHitCacheRate(db *sql.DB, ch chan<- prometheus.Metric) error {
 
 func queryTxCommitRate(db *sql.DB, ch chan<- prometheus.Metric) error {
 	rows, err := db.Query(txCommitRateSql)
-	logger.Infof("Query Database: %s", txCommitRateSql)
+	logger.Debugf("Query Database: %s", txCommitRateSql)
 
 	if err != nil {
 		return err

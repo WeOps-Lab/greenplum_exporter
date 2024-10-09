@@ -78,7 +78,7 @@ func (connectionsScraper) Scrape(db *sql.DB, ch chan<- prometheus.Metric, ver in
 	}
 
 	rows, err := db.Query(querySql)
-	logger.Infof("Query Database: %s", querySql)
+	logger.Debugf("Query Database: %s", querySql)
 
 	if err != nil {
 		return err

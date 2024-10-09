@@ -41,7 +41,7 @@ func (dynamicMemoryScraper) Name() string {
 
 func (dynamicMemoryScraper) Scrape(db *sql.DB, ch chan<- prometheus.Metric, ver int) error {
 	rows, err := db.Query(dynamicMemorySql)
-	logger.Infof("Query Database: %s",dynamicMemorySql)
+	logger.Debugf("Query Database: %s", dynamicMemorySql)
 
 	if err != nil {
 		return err

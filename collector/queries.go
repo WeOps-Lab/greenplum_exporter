@@ -48,7 +48,7 @@ func (queriesScraper) Name() string {
 
 func (queriesScraper) Scrape(db *sql.DB, ch chan<- prometheus.Metric, ver int) error {
 	rows, err := db.Query(queriesSql)
-	logger.Infof("Query Database: %s",queriesSql)
+	logger.Debugf("Query Database: %s", queriesSql)
 
 	if err != nil {
 		return err
